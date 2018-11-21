@@ -126,10 +126,11 @@
               <Font name="Times New Roman" size="18" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="CEO"/>
-                <StringItem index="1" value="Manager"/>
-                <StringItem index="2" value="Employee"/>
+              <StringArray count="4">
+                <StringItem index="0" value="Select Division"/>
+                <StringItem index="1" value="CEO"/>
+                <StringItem index="2" value="Manager"/>
+                <StringItem index="3" value="Employee"/>
               </StringArray>
             </Property>
           </Properties>
@@ -138,7 +139,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="260" y="340" width="-1" height="-1"/>
+              <AbsoluteConstraints x="260" y="340" width="140" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

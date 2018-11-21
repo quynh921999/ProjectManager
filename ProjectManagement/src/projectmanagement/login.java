@@ -19,7 +19,7 @@ public class login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
-    DBConnection dbc = new DBConnection();
+    public static DBConnection dbc = new DBConnection();
     public login() {
         dbc.connect();
         initComponents();
@@ -86,9 +86,9 @@ public class login extends javax.swing.JFrame {
         jLabel4.setBounds(80, 340, 160, 28);
 
         division.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        division.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CEO", "Manager", "Employee" }));
+        division.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Division", "CEO", "Manager", "Employee" }));
         jPanel1.add(division);
-        division.setBounds(260, 340, 105, 28);
+        division.setBounds(260, 340, 140, 28);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -171,7 +171,8 @@ public class login extends javax.swing.JFrame {
         } 
         
         // equal password 
-        
+        //if(txt_Password.getText().equalsIgnoreCase("") || txt_Username.getText().equalsIgnoreCase("") || division.getSelectedItem().toString().equalsIgnoreCase("Select Division"))
+         //   JOptionPane.showMessageDialog(null, "username, password or division is empty!");
         if (pass.equals(txt_Password.getText()) && divisionSql.equals(division.getSelectedItem().toString())) {
             JOptionPane.showMessageDialog(null, "Success");
             try {

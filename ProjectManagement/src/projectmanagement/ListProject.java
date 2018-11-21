@@ -5,6 +5,16 @@
  */
 package projectmanagement;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author quynh
@@ -14,8 +24,13 @@ public class ListProject extends javax.swing.JFrame {
     /**
      * Creates new form ListProject
      */
-    public ListProject() {
+    
+    public static String projName;
+    public ListProject()  {
+
         initComponents();
+        showProject();
+
     }
 
     /**
@@ -46,7 +61,7 @@ public class ListProject extends javax.swing.JFrame {
         txt_managerID = new javax.swing.JTextField();
         txt_empIDs = new javax.swing.JTextField();
         add = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        reset = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -96,7 +111,7 @@ public class ListProject extends javax.swing.JFrame {
         });
 
         projInfo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        projInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/return.png"))); // NOI18N
+        projInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/export_1.png"))); // NOI18N
         projInfo.setText("Export Info");
         projInfo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         projInfo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -135,10 +150,7 @@ public class ListProject extends javax.swing.JFrame {
 
         tbl_proj.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Name", "Manager", "Status", "Task available", "Task finished"
@@ -150,6 +162,11 @@ public class ListProject extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tbl_proj.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_projMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tbl_proj);
@@ -186,14 +203,19 @@ public class ListProject extends javax.swing.JFrame {
         add.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/add_icon.png"))); // NOI18N
         add.setText("Add");
-
-        jButton2.setBackground(new java.awt.Color(51, 204, 255));
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/reset_icon.png"))); // NOI18N
-        jButton2.setText("Reset");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addActionPerformed(evt);
+            }
+        });
+
+        reset.setBackground(new java.awt.Color(51, 204, 255));
+        reset.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/reset_icon.png"))); // NOI18N
+        reset.setText("Reset");
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
             }
         });
 
@@ -217,7 +239,7 @@ public class ListProject extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton2))
+                    .addComponent(reset))
                 .addGap(79, 79, 79)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -249,7 +271,7 @@ public class ListProject extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(76, 76, 76)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -300,14 +322,30 @@ public class ListProject extends javax.swing.JFrame {
         Window.revalidate();
     }//GEN-LAST:event_newProjMousePressed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         txt_name.setText(null);
         txt_managerID.setText(null);
         txt_empIDs.setText(null);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_resetActionPerformed
 
     private void projInfoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projInfoMousePressed
-       
+        try {
+            PrintWriter pw = new PrintWriter(new  File("C:\\Users\\quynh\\Documents\\NetBeansProjects\\ProjectManagement\\projectInfo\\projectInformation.csv"));
+            StringBuilder sb = new StringBuilder();
+            int rows = tbl_proj.getRowCount();
+            int cols = tbl_proj.getColumnCount();
+            for(int i = 0; i < rows; i++){
+                for(int j = 0; j < cols; j++){
+                    sb.append(tbl_proj.getModel().getValueAt(i, j) + ",");
+                }
+                sb.append("\r\n");
+            }
+         pw.write(sb.toString());
+         pw.close();
+         JOptionPane.showMessageDialog(null, "export success!");
+        } catch (IOException ex) {
+            Logger.getLogger(ListProject.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_projInfoMousePressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -320,6 +358,202 @@ public class ListProject extends javax.swing.JFrame {
         Window.revalidate();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        if(Emp.empDivision.equals("CEO")){
+            String sql = "insert into project(managerID, employeeIDs, name)values(?, ?, ?)" ;
+            try {
+                login.dbc.ps = login.dbc.conn.prepareStatement(sql);            
+                login.dbc.ps.setInt(1,Integer.parseInt(txt_managerID.getText()));
+                login.dbc.ps.setString(2, txt_empIDs.getText());
+                login.dbc.ps.setString(3, txt_name.getText());
+                
+                login.dbc.ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Create new project success!");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Create new project not completed!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Only CEO can create new project!");
+        }
+    }//GEN-LAST:event_addActionPerformed
+
+    private void tbl_projMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_projMouseClicked
+        int selectedRow = tbl_proj.getSelectedRow();
+        projName = (String) tbl_proj.getModel().getValueAt(selectedRow, 0);
+        ListTask listTask = new ListTask();
+        listTask.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_tbl_projMouseClicked
+     public ArrayList<Project> listProj() {
+         ArrayList<Project> listProject = new ArrayList<>();
+        try {
+           // login.dbc.connect();
+            String query = "select * from project";
+             login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery(query);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        Project p;
+        try {
+            while(login.dbc.rs.next()){
+                p = new Project(login.dbc.rs.getInt("ID"), login.dbc.rs.getString("name"), login.dbc.rs.getInt("managerID"), login.dbc.rs.getString("employeeIDs"), login.dbc.rs.getString("taskIDs"));
+                listProject.add(p);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            System.out.println(ex.getMessage());
+        }
+        return listProject;
+    }
+     public ArrayList<Project> listProjectManager(){
+        ArrayList<Project> listProject = new ArrayList<>();
+        try {
+            //login.dbc.connect();
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery("select * from project");
+        } catch (SQLException ex) {
+            Logger.getLogger(ListProject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Project p1 = null;
+        try {
+            while(login.dbc.rs.next()){
+                int managerID = login.dbc.rs.getInt("managerID");
+                if(managerID == Emp.empID) {                    
+                      p1 = new Project(login.dbc.rs.getInt("ID"), login.dbc.rs.getString("name"), login.dbc.rs.getInt("managerID"), login.dbc.rs.getString("employeeIDs"), login.dbc.rs.getString("taskIDs"));
+                      listProject.add(p1);
+                }   
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            System.out.println(ex.getMessage());
+        }
+        return listProject;
+    }
+    public ArrayList<Project> listProjectEmployee(){
+        ArrayList<Project> listProject = new ArrayList<>();
+        try {
+            //login.dbc.connect();
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery("select * from project");
+        } catch (SQLException ex) {
+            Logger.getLogger(ListProject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Project p1 = null;
+        try {
+            while(login.dbc.rs.next()){
+                String employeeID = login.dbc.rs.getString("employeeIDs");
+                String[] employeeIDs = employeeID.split(",");
+                ArrayList<Integer> employeeIDsInt = new ArrayList<>();
+                for(int i = 0; i < employeeIDs.length; i++){
+                    employeeIDsInt.add(i, Integer.parseInt(employeeIDs[i]));
+                    System.out.println(employeeIDsInt.get(i));
+                }
+                    
+                if(employeeIDsInt.contains(Emp.empID)) {
+                     p1 = new Project(login.dbc.rs.getInt("ID"), login.dbc.rs.getString("name"), login.dbc.rs.getInt("managerID"), login.dbc.rs.getString("employeeIDs"), login.dbc.rs.getString("taskIDs"));
+                    listProject.add(p1);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            System.out.println(ex.getMessage());
+        }
+        return listProject;
+    }
+  
+     public ArrayList<Integer[]> getInfoTask(ArrayList<Project> listProject) {
+        
+        ArrayList<Integer[]> listTaskID = new ArrayList<>();
+        for (Project proj : listProject) {
+            try {
+                String[] listStrTaskID = proj.getTaskIDs().split(",");
+                Integer[] listIntTaskID = new Integer[listStrTaskID.length];
+                int index = 0;
+                for (String i : listStrTaskID) {
+                    listIntTaskID[index] = Integer.parseInt(listStrTaskID[index].trim());
+                    index++;
+                }
+                listTaskID.add(listIntTaskID);
+            } catch(Exception e) {
+                
+            } 
+           
+        }
+        
+        return listTaskID;
+     }
+
+    public String getNameManager(int managerID){
+        String name = null;
+        String sql = "select username from login where ID = " + managerID;
+        try {
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery(sql);
+            if (login.dbc.rs.next()) {
+                name = login.dbc.rs.getString("username");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return name;
+    }
+    public void showProject() {
+        ArrayList<Project> list = new ArrayList<>();
+        if(Emp.empDivision.equals("CEO"))
+           list = listProj();
+            
+        else if(Emp.empDivision.equals("Manager"))
+            list = listProjectManager();
+        else if(Emp.empDivision.equals("Employee"))
+            list = listProjectEmployee();
+        DefaultTableModel model = (DefaultTableModel) tbl_proj.getModel();
+        ArrayList<Integer[]> listTask = getInfoTask(list);
+        
+        int[][] count = new int[list.size()][2];
+        for(int x = 0; x < count.length; x++){
+            for(int y = 0; y < 2; y++){
+                count[x][y] = 0;
+            }
+        }
+            
+            int index = -1;
+            for (Integer[] i : listTask) {
+                index ++;
+                count[index][0] = i.length;
+                for(int j = 0; j < i.length; j++){
+                    try {
+                        login.dbc.st = login.dbc.conn.createStatement();
+                        login.dbc.rs = login.dbc.st.executeQuery("SELECT status FROM task WHERE id = " + i[j]);
+                        //login.dbc.rs = login.dbc.st.executeQuery("Select task.status, login.username, login.ID, project.managerID from task, login, project where login.ID = project.managerID and task.ID = " + i[j]);
+                        while (login.dbc.rs.next()) {
+                           if(login.dbc.rs.getString("status").equals("Done")) {
+                               count[index][1]++;
+                           }
+                        }
+                        //username.add(dbc.rs.getString("username"));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ListProject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
+       
+        Object[] row = new Object[5];
+        for(int i = 0; i < list.size(); i++){
+            row[0] = list.get(i).getName();
+            row[1] = getNameManager(list.get(i).getManagerId());
+            if(count[i][0] != 0 && count[i][0] == count[i][1])
+                row[2] = "Done";
+            else
+                row[2] = "Not Done";
+            row[3] = count[i][0];
+            row[4] = count[i][1];
+            model.addRow(row);
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -348,10 +582,8 @@ public class ListProject extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListProject().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ListProject().setVisible(true);
         });
     }
 
@@ -361,7 +593,6 @@ public class ListProject extends javax.swing.JFrame {
     private javax.swing.JButton add;
     private javax.swing.JButton back;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -373,6 +604,7 @@ public class ListProject extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel newProj;
     private javax.swing.JLabel projInfo;
+    private javax.swing.JButton reset;
     private javax.swing.JTable tbl_proj;
     private javax.swing.JTextField txt_empIDs;
     private javax.swing.JTextField txt_managerID;

@@ -13,4 +13,18 @@ public class Tester extends Employee{
     public Tester(int id, String username, String password, String name){
         super(id, username, password, name);
     }
+    public void doneTask(Task task){
+        if (task.getStatus().equals("Completed")){
+            task.setStatus("Done");
+        } else {
+            System.out.println("Can not change!");
+        }
+    }
+    public void rejectTask(Task task){
+        if (task.getStatus().equals("Completed")){
+            task.setStatus("");
+        } else {
+            System.out.println("Can not change!");
+        }
+    }
 }

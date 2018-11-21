@@ -11,14 +11,24 @@ package projectmanagement;
  */
 public class Task {
     private int id;
-    private String projectId;
+    private int projectId;
     private String developerIdS;
     private String testerIds;
     private String createdDate;
     private String endDate;
     private String status;
-    public Task(int id, String proj, String develop, String tester, String createDate, String endDate, String status){
+    private String name;
+    public Task(int id, int proj, String develop, String tester, String createDate, String endDate, String status){
         this.id = id;
+        this.projectId = proj;
+        this.developerIdS = develop;
+        this.testerIds = tester;
+        this.createdDate = createDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+    public Task(String name, int proj, String develop, String tester, String createDate, String endDate, String status){
+        this.name = name;
         this.projectId = proj;
         this.developerIdS = develop;
         this.testerIds = tester;
@@ -44,14 +54,14 @@ public class Task {
     /**
      * @return the projectId
      */
-    public String getProjectId() {
+    public int getProjectId() {
         return projectId;
     }
 
     /**
      * @param projectId the projectId to set
      */
-    public void setProjectId(String projectId) {
+    public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
 
@@ -123,6 +133,20 @@ public class Task {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

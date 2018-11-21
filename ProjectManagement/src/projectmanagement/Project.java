@@ -12,13 +12,15 @@ package projectmanagement;
 public class Project {
     private int id;
     private String name;
-    private String managerId;
+    private int managerId;
     private String employeeIds;
-    public Project(int id, String name, String managerId, String employeeId){
+    private String taskIDs;
+    public Project(int id, String name, int managerId, String employeeId, String taskIDs){
         this.id = id;
         this.name = name;
         this.managerId = managerId;
         this.employeeIds = employeeId;
+        this.taskIDs = taskIDs;
     }
 
     /**
@@ -52,14 +54,14 @@ public class Project {
     /**
      * @return the managerId
      */
-    public String getManagerId() {
+    public int getManagerId() {
         return managerId;
     }
 
     /**
      * @param managerId the managerId to set
      */
-    public void setManagerId(String managerId) {
+    public void setManagerId(int managerId) {
         this.managerId = managerId;
     }
 
@@ -75,5 +77,19 @@ public class Project {
      */
     public void setEmployeeIds(String employeeIds) {
         this.employeeIds = employeeIds;
+    }
+
+    /**
+     * @return the taskIDs
+     */
+    public String getTaskIDs() {
+        return taskIDs;
+    }
+
+    /**
+     * @param taskIDs the taskIDs to set
+     */
+    public void setTaskIDs(String taskIDs) {
+        this.taskIDs = taskIDs;
     }
 }

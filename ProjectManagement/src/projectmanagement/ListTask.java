@@ -5,6 +5,16 @@
  */
 package projectmanagement;
 
+import java.util.Date;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author quynh
@@ -16,6 +26,7 @@ public class ListTask extends javax.swing.JFrame {
      */
     public ListTask() {
         initComponents();
+        showListTaskEmp();
     }
 
     /**
@@ -27,25 +38,552 @@ public class ListTask extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        back = new javax.swing.JButton();
+        Tools = new javax.swing.JPanel();
+        createTask = new javax.swing.JLabel();
+        infoTask = new javax.swing.JLabel();
+        infoTaskAL = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        Windows = new javax.swing.JPanel();
+        tbl_task = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        status = new javax.swing.JComboBox<>();
+        date = new javax.swing.JTextField();
+        filterDate = new javax.swing.JButton();
+        filterStatus = new javax.swing.JButton();
+        newTask = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        nameTask = new javax.swing.JTextField();
+        nameDev = new javax.swing.JTextField();
+        nameTester = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        back.setBackground(new java.awt.Color(255, 51, 204));
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/back.png"))); // NOI18N
+        back.setText("Back");
+        back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backActionPerformed(evt);
+            }
+        });
+
+        Tools.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        createTask.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        createTask.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/Allowance.png"))); // NOI18N
+        createTask.setText("New Task");
+        createTask.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        createTask.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                createTaskMousePressed(evt);
+            }
+        });
+
+        infoTask.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        infoTask.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/export_1.png"))); // NOI18N
+        infoTask.setText("Info Task");
+        infoTask.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        infoTaskAL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/export_1.png"))); // NOI18N
+        infoTaskAL.setText("Info Task action Log");
+        infoTaskAL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Tools");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout ToolsLayout = new javax.swing.GroupLayout(Tools);
+        Tools.setLayout(ToolsLayout);
+        ToolsLayout.setHorizontalGroup(
+            ToolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(createTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(infoTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(infoTaskAL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        ToolsLayout.setVerticalGroup(
+            ToolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ToolsLayout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(createTask, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(infoTask, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(infoTaskAL, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
+        );
+
+        Windows.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        Windows.setLayout(new java.awt.CardLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Name project", "Developer", "Tester", "startDate", "endDate", "status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel2.setText("Filter: ");
+
+        status.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Created", "Assigned", "Started", "Completed", "Done", "Reject", "Closed ", " " }));
+        status.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        date.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        date.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        filterDate.setText("Filter");
+        filterDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterDateActionPerformed(evt);
+            }
+        });
+
+        filterStatus.setText("Filter");
+        filterStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterStatusActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tbl_taskLayout = new javax.swing.GroupLayout(tbl_task);
+        tbl_task.setLayout(tbl_taskLayout);
+        tbl_taskLayout.setHorizontalGroup(
+            tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tbl_taskLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(tbl_taskLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(40, 40, 40)
+                        .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(filterStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
+                .addGroup(tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(filterDate, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(196, 196, 196))
+        );
+        tbl_taskLayout.setVerticalGroup(
+            tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tbl_taskLayout.createSequentialGroup()
+                .addGroup(tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(tbl_taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(filterDate)
+                    .addComponent(filterStatus))
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        Windows.add(tbl_task, "card2");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel4.setText("Name :");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel5.setText("Name developer:");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel6.setText("Name tester:");
+
+        nameTask.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        nameDev.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        nameTester.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jButton1.setBackground(new java.awt.Color(153, 204, 255));
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/reset_icon.png"))); // NOI18N
+        jButton1.setText("Reset");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(153, 204, 255));
+        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/Allowance.png"))); // NOI18N
+        jButton2.setText("Create");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(255, 51, 102));
+        jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton3.setText("Return");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout newTaskLayout = new javax.swing.GroupLayout(newTask);
+        newTask.setLayout(newTaskLayout);
+        newTaskLayout.setHorizontalGroup(
+            newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newTaskLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(newTaskLayout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90))
+                    .addGroup(newTaskLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nameTask, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(nameDev, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+                                .addComponent(nameTester)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        newTaskLayout.setVerticalGroup(
+            newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newTaskLayout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameTask, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(107, 107, 107)
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nameDev, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameTester, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
+                .addGroup(newTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
+
+        Windows.add(newTask, "card3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Tools, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Windows, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(back))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(Tools, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(back)
+                .addGap(18, 18, 18)
+                .addComponent(Windows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void createTaskMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createTaskMousePressed
+        if(Emp.empDivision.equals("Manager")){
+            Windows.removeAll();
+            Windows.repaint();
+            Windows.revalidate();
+
+            Windows.add(newTask);
+            Windows.repaint();
+            Windows.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Only Manager can create new Task!");
+        }
+        
+    }//GEN-LAST:event_createTaskMousePressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Windows.removeAll();
+        Windows.repaint();
+        Windows.revalidate();
+        
+        Windows.add(tbl_task);
+        Windows.repaint();
+        Windows.revalidate();
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public String getIDperson(String name){
+        String ids = "";
+        String[] tempName = name.split(",");
+        for (int i = 0; i < tempName.length; i++) {
+             String sql = "select * from login where username = ?";
+            try {
+                login.dbc.ps = login.dbc.conn.prepareStatement(sql);
+                login.dbc.ps.setString(1, tempName[i]);
+                login.dbc.rs = login.dbc.ps.executeQuery();
+            } catch (SQLException ex) {
+                Logger.getLogger(ex.getMessage());
+            } 
+            try {
+                int id = 0;
+                if(login.dbc.rs.next())
+                    id = login.dbc.rs.getInt("ID");
+                    ids = ids + Integer.toString(id) + ",";
+            } catch (SQLException ex) {
+                Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ids.substring(0, ids.length()-1);
+    }
+    public int getIDProj(String name){
+        String sql = "select * from project where name = ?";
+        // get pass from database
+        try {
+            login.dbc.ps = login.dbc.conn.prepareStatement(sql);
+            login.dbc.ps.setString(1, name);
+            login.dbc.rs = login.dbc.ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ex.getMessage());
+        } 
+        int id = 0;
+        try {
+            if(login.dbc.rs.next())
+                id = login.dbc.rs.getInt("ID");
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String name = nameTask.getText();
+        String nameDeve = nameDev.getText();
+        String nameTest = nameTester.getText();
+        String nameProj = ListProject.projName;
+        String devIDs = getIDperson(nameDeve);
+        //System.out.println(devIDs);
+        String testIDs = getIDperson(nameTest);
+        //System.out.println(testIDs);
+        int idproj = getIDProj(nameProj);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String start = dateFormat.format(date);
+        String sql = "insert into task(projectID, developerIDs, testerIDs, createdDate, endDate, status, name) values(?, ? ,?, ?, ?, ?, ?)";
+        try {
+            login.dbc.ps = login.dbc.conn.prepareStatement(sql);
+            login.dbc.ps.setInt(1, idproj);
+            login.dbc.ps.setString(2, devIDs);
+            login.dbc.ps.setString(3, testIDs);
+            login.dbc.ps.setString(4, start);
+            login.dbc.ps.setString(5,null );
+            if(nameDeve.equals(null))
+                login.dbc.ps.setString(6, "Created");
+            else
+                login.dbc.ps.setString(6, "Assigned");
+            login.dbc.ps.setString(7, name);
+            login.dbc.ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Create new task success!");
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void filterStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterStatusActionPerformed
+        
+    }//GEN-LAST:event_filterStatusActionPerformed
+
+    private void filterDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filterDateActionPerformed
+
     /**
-     * @param args the command line arguments
+     * @param tempID
+     * @return 
      */
+
+    public String getNamePerson(String tempID){
+        String namePerson = "";
+        String[] temp = tempID.split(",");
+        int[] id = new int[temp.length];
+        for(int i = 0; i < temp.length; i++){
+            id[i] = Integer.parseInt(temp[i]);
+        }
+        for(int j = 0; j < id.length; j++){
+            try {
+                login.dbc.st = login.dbc.conn.createStatement();
+                login.dbc.rs = login.dbc.st.executeQuery("select username from login where ID = "+ id[j]);
+            } catch (SQLException ex) {
+                Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String name = "";
+            try {
+                if(login.dbc.rs.next())
+                    name = login.dbc.rs.getString("username");
+                namePerson += name + ",";
+            } catch (SQLException ex) {
+                Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        namePerson = namePerson.substring(0, namePerson.length()-1);
+        return namePerson;
+    }
+    public String getNameProject(int projectID){
+        try {
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery("select name from project where ID = "+ projectID);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String name ="";
+        try {
+            if(login.dbc.rs.next()){
+                name = login.dbc.rs.getString("name");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return name;
+    }
+    public int getIDProj(){
+        String nameProj = ListProject.projName;
+        String sql = "select * from project where name = ?";
+        // get pass from database
+        try {
+            login.dbc.ps = login.dbc.conn.prepareStatement(sql);
+            login.dbc.ps.setString(1, nameProj);
+            login.dbc.rs = login.dbc.ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ex.getMessage());
+        } 
+        int id = 0;
+        try {
+            if(login.dbc.rs.next())
+                id = login.dbc.rs.getInt("ID");
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+    public ArrayList<Task> getListTaskFromProj(){
+        int id = getIDProj();
+        String sql = "select * from task where projectID = " + id;
+        try {
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           ArrayList<Task> listTask = new ArrayList<>();
+        try {
+            while(login.dbc.rs.next()){
+                String name = login.dbc.rs.getString("name");
+                int projID =    login.dbc.rs.getInt("projectID");
+                String devIDs = login.dbc.rs.getString("developerIDs");
+                String testIDs = login.dbc.rs.getString("testerIDs");
+                String start = login.dbc.rs.getString("createdDate");
+                String end = login.dbc.rs.getString("endDate");
+                String sta = login.dbc.rs.getString("status");
+                Task temp = new Task(name, projID,devIDs, testIDs, start, end, sta);
+                listTask.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listTask;
+    }
+    public ArrayList<Task> getListTask(){
+        ArrayList<Task> listTask = new ArrayList<>();
+        String sql = "select * from task where developerIDs like '%" + Emp.empID + "%' or testerIDs like '%" + Emp.empID + "%'";
+        try {
+            login.dbc.st = login.dbc.conn.createStatement();
+            login.dbc.rs = login.dbc.st.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            while (login.dbc.rs.next()){
+                String name = login.dbc.rs.getString("name");
+                int projID =    login.dbc.rs.getInt("projectID");
+                String devIDs = login.dbc.rs.getString("developerIDs");
+                String testIDs = login.dbc.rs.getString("testerIDs");
+                String start = login.dbc.rs.getString("createdDate");
+                String end = login.dbc.rs.getString("endDate");
+                String sta = login.dbc.rs.getString("status");
+                Task temp = new Task(name, projID,devIDs, testIDs, start, end, sta);
+                listTask.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listTask;
+    }
+    
+    public void showListTaskEmp(){
+        ArrayList<Task> listTask = new ArrayList<>();
+        if(Emp.empDivision.equals("Employee"))
+            listTask = getListTask();
+        else
+            listTask = getListTaskFromProj();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        Object[] rows = new Object[7];
+        for(int i = 0; i < listTask.size(); i++){
+            rows[0] = listTask.get(i).getName();
+            rows[1] = getNameProject(listTask.get(i).getProjectId());
+            rows[2] = getNamePerson(listTask.get(i).getDeveloperIdS());
+            rows[3] = getNamePerson(listTask.get(i).getTesterIds());
+            rows[4] = listTask.get(i).getCreatedDate();
+            rows[5] = listTask.get(i).getEndDate();
+            rows[6] = listTask.get(i).getStatus();
+            model.addRow(rows);
+        }
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -79,5 +617,30 @@ public class ListTask extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Tools;
+    private javax.swing.JPanel Windows;
+    private javax.swing.JButton back;
+    private javax.swing.JLabel createTask;
+    private javax.swing.JTextField date;
+    private javax.swing.JButton filterDate;
+    private javax.swing.JButton filterStatus;
+    private javax.swing.JLabel infoTask;
+    private javax.swing.JLabel infoTaskAL;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField nameDev;
+    private javax.swing.JTextField nameTask;
+    private javax.swing.JTextField nameTester;
+    private javax.swing.JPanel newTask;
+    private javax.swing.JComboBox<String> status;
+    private javax.swing.JPanel tbl_task;
     // End of variables declaration//GEN-END:variables
 }

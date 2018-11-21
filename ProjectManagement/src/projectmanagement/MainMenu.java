@@ -5,6 +5,8 @@
  */
 package projectmanagement;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author quynh
@@ -102,11 +104,21 @@ public class MainMenu extends javax.swing.JFrame {
         listTask.setBackground(new java.awt.Color(153, 255, 153));
         listTask.setForeground(new java.awt.Color(255, 255, 255));
         listTask.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/listTask.png"))); // NOI18N
+        listTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listTaskActionPerformed(evt);
+            }
+        });
         jPanel2.add(listTask);
         listTask.setBounds(180, 290, 120, 60);
 
         listUser.setBackground(new java.awt.Color(153, 255, 153));
         listUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProjectMangement/Image/listUser.png"))); // NOI18N
+        listUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listUserActionPerformed(evt);
+            }
+        });
         jPanel2.add(listUser);
         listUser.setBounds(570, 120, 120, 60);
 
@@ -146,6 +158,26 @@ public class MainMenu extends javax.swing.JFrame {
         list.setTitle("Project");
         this.dispose();
     }//GEN-LAST:event_listProjectActionPerformed
+
+    private void listTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTaskActionPerformed
+        if(Emp.empDivision.equals("Employee")){
+            ListTask list = new ListTask();
+            list.setVisible(true);
+            list.setTitle("Task");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Only Employee can use!");
+        }
+        
+    }//GEN-LAST:event_listTaskActionPerformed
+
+    private void listUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listUserActionPerformed
+        if(Emp.empDivision.equals("CEO")){
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Only CEO can use!");
+        }
+    }//GEN-LAST:event_listUserActionPerformed
 
     /**
      * @param args the command line arguments
